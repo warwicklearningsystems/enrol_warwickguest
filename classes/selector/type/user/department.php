@@ -52,7 +52,6 @@ class department extends base{
         $this->config = new config( $options['plugin'], $this->configName, $this->propertyFromConfigToDisplay );
         $this->enrolInstance = $options['enrol_instance'];
         parent::__construct($name, $options);
-        require_once($CFG->dirroot . '/group/lib.php');
     }
 
     protected function get_options() {
@@ -74,9 +73,7 @@ class department extends base{
     public function find_users($search) {
         
         $existingDesignations = $this->config->getFlatConfigByProperty( null, true );
-        
-        list($wherecondition, $params) = $this->search_sql($search, 'u');
-
+        var_dump($existingDesignations);
         
         $searchObject = new search( $search , $this->propertyFromConfigToDisplay, $this->searchanywhere );
         $designations = self::extractFlatConfig( $this->enrolInstance, $search ? $searchObject : null, 'customtext2');
