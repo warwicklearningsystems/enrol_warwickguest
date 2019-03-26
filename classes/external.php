@@ -17,7 +17,7 @@
 /**
  * Guest enrolment method external API
  *
- * @package    enrol_guest
+ * @package    enrol_warwickguest
  * @category   external
  * @copyright  2015 Juan Leyva <juan@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -32,13 +32,13 @@ require_once($CFG->libdir . '/enrollib.php');
 /**
  * Guest enrolment method external API
  *
- * @package    enrol_guest
+ * @package    enrol_warwickguest
  * @category   external
  * @copyright  2015 Juan Leyva <juan@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @since      Moodle 3.1
  */
-class enrol_guest_external extends external_api {
+class enrol_warwickguest_external extends external_api {
 
     /**
      * Returns description of get_instance_info() parameters.

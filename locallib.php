@@ -17,28 +17,31 @@
 /**
  * Guest access plugin implementation.
  *
- * @package    enrol_guest
+ * @package    enrol_warwickguest
  * @copyright  2010 Petr Skoda  {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
+use \enrol_warwickguest\selector\type\user\department;
+use \enrol_warwickguest\selector\type\user\designation;
+
 require_once("$CFG->libdir/formslib.php");
 
-class enrol_guest_enrol_form extends moodleform {
+class enrol_warwickguest_enrol_form extends moodleform {
     protected $instance;
 
     public function definition() {
         $mform = $this->_form;
         $instance = $this->_customdata;
         $this->instance = $instance;
-        $plugin = enrol_get_plugin('guest');
+        $plugin = enrol_get_plugin('warwickguest');
 
         $heading = $plugin->get_instance_name($instance);
         $mform->addElement('header', 'guestheader', $heading);
 
-        $mform->addElement('password', 'guestpassword', get_string('password', 'enrol_guest'));
+        $mform->addElement('password', 'guestpassword', get_string('password', 'enrol_warwickguest'));
 
         $this->add_action_buttons(false, get_string('submit'));
 
@@ -52,20 +55,32 @@ class enrol_guest_enrol_form extends moodleform {
     }
 
     public function validation($data, $files) {
-        global $DB, $CFG;
+        global $DB, $CFG, $USER;
 
         $errors = parent::validation($data, $files);
         $instance = $this->instance;
-
+        
         if ($instance->password !== '') {
             if ($data['guestpassword'] !== $instance->password) {
-                $plugin = enrol_get_plugin('guest');
+                $plugin = enrol_get_plugin('warwickguest');
                 if ($plugin->get_config('showhint')) {
                     $hint = core_text::substr($instance->password, 0, 1);
-                    $errors['guestpassword'] = get_string('passwordinvalidhint', 'enrol_guest', $hint);
+                    $errors['guestpassword'] = get_string('passwordinvalidhint', 'enrol_warwickguest', $hint);
                 } else {
-                    $errors['guestpassword'] = get_string('passwordinvalid', 'enrol_guest');
+                    $errors['guestpassword'] = get_string('passwordinvalid', 'enrol_warwickguest');
                 }
+            }
+        }
+        
+        if( designation::isValueSet( $instance, 'customtext1' ) ){
+            if( !designation::hasValue( $instance, $USER->phone2,'customtext1', 'phone2' ) ){
+                $errors['guestpassword'] = 'invalid designation';
+            }
+        }
+        
+        if( department::isValueSet( $instance, 'customtext2' ) ){
+            if( !designation::hasValue( $instance, $USER->phone2,'customtext2', 'department' ) ){
+                $errors['guestpassword'] = 'invalid department';
             }
         }
 

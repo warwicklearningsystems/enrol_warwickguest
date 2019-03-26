@@ -17,7 +17,7 @@
 /**
  * Guest enrolment external functions and service definitions.
  *
- * @package    enrol_guest
+ * @package    enrol_warwickguest
  * @category   external
  * @copyright  2015 Juan Leyva <juan@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,8 +26,8 @@
 
 $functions = array(
 
-    'enrol_guest_get_instance_info' => array(
-        'classname'   => 'enrol_guest_external',
+    'enrol_warwickguest_get_instance_info' => array(
+        'classname'   => 'enrol_warwickguest_external',
         'methodname'  => 'get_instance_info',
         'description' => 'Return guest enrolment instance information.',
         'type'        => 'read',

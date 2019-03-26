@@ -17,7 +17,7 @@
 /**
  * Self enrol external PHPunit tests
  *
- * @package   enrol_guest
+ * @package   enrol_warwickguest
  * @copyright 2015 Juan Leyva <juan@moodle.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @since     Moodle 3.1
@@ -32,13 +32,13 @@ require_once($CFG->dirroot . '/webservice/tests/helpers.php');
 /**
  * Guest enrolment external functions tests
  *
- * @package    enrol_guest
+ * @package    enrol_warwickguest
  * @category   external
  * @copyright  2015 Juan Leyva <juan@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @since      Moodle 3.1
  */
-class enrol_guest_external_testcase extends externallib_advanced_testcase {
+class enrol_warwickguest_external_testcase extends externallib_advanced_testcase {
 
     /**
      * Test get_instance_info
@@ -68,8 +68,8 @@ class enrol_guest_external_testcase extends externallib_advanced_testcase {
                                                                 'roleid' => $studentrole->id));
 
         $this->setAdminUser();
-        $result = enrol_guest_external::get_instance_info($instance);
-        $result = external_api::clean_returnvalue(enrol_guest_external::get_instance_info_returns(), $result);
+        $result = enrol_warwickguest_external::get_instance_info($instance);
+        $result = external_api::clean_returnvalue(enrol_warwickguest_external::get_instance_info_returns(), $result);
 
         $this->assertEquals($instance, $result['instanceinfo']['id']);
         $this->assertEquals($course->id, $result['instanceinfo']['courseid']);
@@ -80,8 +80,8 @@ class enrol_guest_external_testcase extends externallib_advanced_testcase {
 
         $DB->set_field('enrol', 'status', ENROL_INSTANCE_DISABLED, array('id' => $instance));
 
-        $result = enrol_guest_external::get_instance_info($instance);
-        $result = external_api::clean_returnvalue(enrol_guest_external::get_instance_info_returns(), $result);
+        $result = enrol_warwickguest_external::get_instance_info($instance);
+        $result = external_api::clean_returnvalue(enrol_warwickguest_external::get_instance_info_returns(), $result);
         $this->assertEquals($instance, $result['instanceinfo']['id']);
         $this->assertEquals($course->id, $result['instanceinfo']['courseid']);
         $this->assertEquals('guest', $result['instanceinfo']['type']);
@@ -95,7 +95,7 @@ class enrol_guest_external_testcase extends externallib_advanced_testcase {
         $user = self::getDataGenerator()->create_user();
         $this->setUser($user);
         try {
-            enrol_guest_external::get_instance_info($instance);
+            enrol_warwickguest_external::get_instance_info($instance);
         } catch (moodle_exception $e) {
             $this->assertEquals('coursehidden', $e->errorcode);
         }
@@ -103,8 +103,8 @@ class enrol_guest_external_testcase extends externallib_advanced_testcase {
         // Student user.
         $DB->set_field('course', 'visible', 1, array('id' => $course->id));
         $this->setUser($student);
-        $result = enrol_guest_external::get_instance_info($instance);
-        $result = external_api::clean_returnvalue(enrol_guest_external::get_instance_info_returns(), $result);
+        $result = enrol_warwickguest_external::get_instance_info($instance);
+        $result = external_api::clean_returnvalue(enrol_warwickguest_external::get_instance_info_returns(), $result);
 
         $this->assertEquals($instance, $result['instanceinfo']['id']);
         $this->assertEquals($course->id, $result['instanceinfo']['courseid']);

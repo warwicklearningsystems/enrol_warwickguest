@@ -20,20 +20,21 @@
  * This plugin does not add any entries into the user_enrolments table,
  * the access control is granted on the fly via the tricks in require_login().
  *
- * @package    enrol_guest
+ * @package    enrol_warwickguest
  * @copyright  2010 Petr Skoda  {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+use \enrol_warwickguest\form\select;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Class enrol_guest_plugin
+ * Class enrol_warwickguest_plugin
  *
  * @copyright  2010 Petr Skoda  {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class enrol_guest_plugin extends enrol_plugin {
+class enrol_warwickguest_plugin extends enrol_plugin {
 
     /**
      * Returns optional enrolment information icons.
@@ -50,9 +51,9 @@ class enrol_guest_plugin extends enrol_plugin {
     public function get_info_icons(array $instances) {
         foreach ($instances as $instance) {
             if ($instance->password !== '') {
-                return array(new pix_icon('withpassword', get_string('guestaccess_withpassword', 'enrol_guest'), 'enrol_guest'));
+                return array(new pix_icon('withpassword', get_string('guestaccess_withpassword', 'enrol_warwickguest'), 'enrol_warwickguest'));
             } else {
-                return array(new pix_icon('withoutpassword', get_string('guestaccess_withoutpassword', 'enrol_guest'), 'enrol_guest'));
+                return array(new pix_icon('withoutpassword', get_string('guestaccess_withoutpassword', 'enrol_warwickguest'), 'enrol_warwickguest'));
             }
         }
     }
@@ -99,8 +100,8 @@ class enrol_guest_plugin extends enrol_plugin {
         if ($instance->password === '') {
             $allow = true;
 
-        } else if (isset($USER->enrol_guest_passwords[$instance->id])) { // this is a hack, ideally we should not add stuff to $USER...
-            if ($USER->enrol_guest_passwords[$instance->id] === $instance->password) {
+        } else if (isset($USER->enrol_warwickguest_passwords[$instance->id])) { // this is a hack, ideally we should not add stuff to $USER...
+            if ($USER->enrol_warwickguest_passwords[$instance->id] === $instance->password) {
                 $allow = true;
             }
         }
@@ -125,7 +126,7 @@ class enrol_guest_plugin extends enrol_plugin {
 
         $context = context_course::instance($courseid, MUST_EXIST);
 
-        if (!has_capability('moodle/course:enrolconfig', $context) or !has_capability('enrol/guest:config', $context)) {
+        if (!has_capability('moodle/course:enrolconfig', $context) or !has_capability('enrol/warwickguest:config', $context)) {
             return false;
         }
 
@@ -155,15 +156,15 @@ class enrol_guest_plugin extends enrol_plugin {
             return null;
         }
 
-        require_once("$CFG->dirroot/enrol/guest/locallib.php");
-        $form = new enrol_guest_enrol_form(NULL, $instance);
+        require_once("$CFG->dirroot/enrol/warwickguest/locallib.php");
+        $form = new enrol_warwickguest_enrol_form(NULL, $instance);
         $instanceid = optional_param('instance', 0, PARAM_INT);
 
         if ($instance->id == $instanceid) {
             if ($data = $form->get_data()) {
                 // add guest role
                 $context = context_course::instance($instance->courseid);
-                $USER->enrol_guest_passwords[$instance->id] = $data->guestpassword; // this is a hack, ideally we should not add stuff to $USER...
+                $USER->enrol_warwickguest_passwords[$instance->id] = $data->guestpassword; // this is a hack, ideally we should not add stuff to $USER...
                 if (isset($USER->enrol['tempguest'][$instance->courseid])) {
                     remove_temp_course_roles($context);
                 }
@@ -200,10 +201,10 @@ class enrol_guest_plugin extends enrol_plugin {
         global $DB;
 
         if ($inserted) {
-            if (isset($data->enrol_guest_status_0)) {
-                $fields = array('status'=>$data->enrol_guest_status_0);
+            if (isset($data->enrol_warwickguest_status_0)) {
+                $fields = array('status'=>$data->enrol_warwickguest_status_0);
                 if ($fields['status'] == ENROL_INSTANCE_ENABLED) {
-                    $fields['password'] = $data->enrol_guest_password_0;
+                    $fields['password'] = $data->enrol_warwickguest_password_0;
                 } else {
                     if ($this->get_config('requirepassword')) {
                         $fields['password'] = generate_password(20);
@@ -221,16 +222,16 @@ class enrol_guest_plugin extends enrol_plugin {
             foreach ($instances as $instance) {
                 $i = $instance->id;
 
-                if (isset($data->{'enrol_guest_status_'.$i})) {
-                    $reset = ($instance->status != $data->{'enrol_guest_status_'.$i});
+                if (isset($data->{'enrol_warwickguest_status_'.$i})) {
+                    $reset = ($instance->status != $data->{'enrol_warwickguest_status_'.$i});
 
-                    $instance->status       = $data->{'enrol_guest_status_'.$i};
+                    $instance->status       = $data->{'enrol_warwickguest_status_'.$i};
                     $instance->timemodified = time();
                     if ($instance->status == ENROL_INSTANCE_ENABLED) {
-                        if ($instance->password !== $data->{'enrol_guest_password_'.$i}) {
+                        if ($instance->password !== $data->{'enrol_warwickguest_password_'.$i}) {
                             $reset = true;
                         }
-                        $instance->password = $data->{'enrol_guest_password_'.$i};
+                        $instance->password = $data->{'enrol_warwickguest_password_'.$i};
                     }
                     $DB->update_record('enrol', $instance);
                     \core\event\enrol_instance_updated::create_from_record($instance)->trigger();
@@ -302,7 +303,7 @@ class enrol_guest_plugin extends enrol_plugin {
      */
     public function can_delete_instance($instance) {
         $context = context_course::instance($instance->courseid);
-        return has_capability('enrol/guest:config', $context);
+        return has_capability('enrol/warwickguest:config', $context);
     }
 
     /**
@@ -313,7 +314,7 @@ class enrol_guest_plugin extends enrol_plugin {
      */
     public function can_hide_show_instance($instance) {
         $context = context_course::instance($instance->courseid);
-        if (!has_capability('enrol/guest:config', $context)) {
+        if (!has_capability('enrol/warwickguest:config', $context)) {
             return false;
         }
 
@@ -338,7 +339,7 @@ class enrol_guest_plugin extends enrol_plugin {
     }
 
     /**
-     * Get default settings for enrol_guest.
+     * Get default settings for enrol_warwickguest.
      *
      * @return array
      */
@@ -371,7 +372,7 @@ class enrol_guest_plugin extends enrol_plugin {
 
         // If the plugin is enabled, return the URL for obtaining more information.
         if ($instanceinfo->status) {
-            $instanceinfo->wsfunction = 'enrol_guest_get_instance_info';
+            $instanceinfo->wsfunction = 'enrol_warwickguest_get_instance_info';
         }
         return $instanceinfo;
     }
@@ -396,16 +397,17 @@ class enrol_guest_plugin extends enrol_plugin {
      * @return bool
      */
     public function edit_instance_form($instance, MoodleQuickForm $mform, $context) {
-        global $CFG;
+        global $CFG, $GLOBALS;
 
         $options = $this->get_status_options();
-        $mform->addElement('select', 'status', get_string('status', 'enrol_guest'), $options);
-        $mform->addHelpButton('status', 'status', 'enrol_guest');
+        
+        $mform->addElement('select', 'status', get_string('status', 'enrol_warwickguest'), $options);
+        $mform->addHelpButton('status', 'status', 'enrol_warwickguest');
         $mform->setDefault('status', $this->get_config('status'));
         $mform->setAdvanced('status', $this->get_config('status_adv'));
 
-        $mform->addElement('passwordunmask', 'password', get_string('password', 'enrol_guest'));
-        $mform->addHelpButton('password', 'password', 'enrol_guest');
+        $mform->addElement('passwordunmask', 'password', get_string('password', 'enrol_warwickguest'));
+        $mform->addHelpButton('password', 'password', 'enrol_warwickguest');
 
         // If we have a new instance and the password is required - make sure it is set. For existing
         // instances we do not force the password to be required as it may have been set to empty before
@@ -414,8 +416,139 @@ class enrol_guest_plugin extends enrol_plugin {
         if (empty($instance->id) && $this->get_config('requirepassword')) {
             $mform->addRule('password', get_string('required'), 'required', null);
         }
-    }
+        
 
+        $designationAddElement = new enrol_warwickguest_formelementdesignationadd();
+        $designationAddElement->setInstance( $instance );
+        $mform->addElement( $designationAddElement );
+        
+        $designationremoveElement = new enrol_warwickguest_formelementdesignationremove();
+        $designationremoveElement->setInstance( $instance );
+        $mform->addElement( $designationremoveElement );
+        
+        $departmentAddElement = new enrol_warwickguest_formelementdepartmentadd();
+        $departmentAddElement->setInstance( $instance );
+        $mform->addElement( $departmentAddElement );
+        
+        $departmentremoveElement = new enrol_warwickguest_formelementdepartmentremove();
+        $departmentremoveElement->setInstance( $instance );
+        $mform->addElement( $departmentremoveElement );
+    }
+    
+    /**
+     * Update instance of enrol plugin.
+     *
+     * @since Moodle 3.1
+     * @param stdClass $instance
+     * @param stdClass $data modified instance fields
+     * @return boolean
+     */
+    public function update_instance($instance, $data) {
+        global $DB;
+        
+        if(optional_param('designations_add_button', false, PARAM_BOOL)){
+
+            $existingDesignations = [];
+            
+            if( !is_null( $instance->customtext1 ) ){
+                $configMap = enrol_warwickguest\selector\type\user\designation::extractFlatConfig( $instance );
+                foreach( $configMap as $key => $config){
+                    $existingDesignations[] = $config->phone2;
+                }
+            }
+
+            $newValues = array_diff( $data->designations_remove, $existingDesignations );
+            $designationToAdd = array_merge( $existingDesignations, $newValues );
+            
+            $designationMap = [];
+            foreach( $designationToAdd as $value ){
+                $designationMap[] = [
+                    'id' => $value,
+                    'phone2' => $value 
+                ];
+            }
+
+            $data->customtext1 = json_encode( $designationMap );
+        }
+        
+        if(optional_param('designations_remove_button', false, PARAM_BOOL)){
+            
+            $existingDesignations = [];
+            
+            if( !is_null( $instance->customtext1 ) ){
+                $configMap = enrol_warwickguest\selector\type\user\designation::extractFlatConfig( $instance );
+                foreach( $configMap as $key => $config){
+                    $existingDesignations[] = $config->phone2;
+                }
+            }
+            
+            $designationsToRemove = array_diff( $existingDesignations, $data->designations_add );
+        
+            $designationMap = [];
+            foreach( $designationsToRemove as $value ){
+                $designationMap[] = [
+                    'id' => $value,
+                    'phone2' => $value 
+                ];
+            }
+
+            $data->customtext1 = json_encode( $designationMap );            
+        }
+        
+        if(optional_param('departments_add_button', false, PARAM_BOOL)){
+
+            $existingDepartments = [];
+            
+            if( !is_null( $instance->customtext2 ) ){
+                $configMap = enrol_warwickguest\selector\type\user\department::extractFlatConfig( $instance, null, 'customtext2' );
+                foreach( $configMap as $key => $config){
+                    $existingDepartments[] = $config->department;
+                }
+            }
+
+            $newValues = array_diff( $data->departments_remove, $existingDepartments );
+            $departmentToAdd = array_merge( $existingDepartments, $newValues );
+            
+            $departmentMap = [];
+            foreach( $departmentToAdd as $value ){
+                $departmentMap[] = [
+                    'id' => $value,
+                    'department' => $value 
+                ];
+            }
+
+            $data->customtext2 = json_encode( $departmentMap );
+        }
+        
+        if(optional_param('departments_remove_button', false, PARAM_BOOL)){
+            
+            $existingDepartments = [];
+            
+            if( !is_null( $instance->customtext2 ) ){
+                $configMap = enrol_warwickguest\selector\type\user\department::extractFlatConfig( $instance, null, 'customtext2' );
+                foreach( $configMap as $key => $config){
+                    $existingDepartments[] = $config->department;
+                }
+            }
+            
+            $departmentsToRemove = array_diff( $existingDepartments, $data->departments_add );
+        
+            $departmentMap = [];
+            foreach( $departmentsToRemove as $value ){
+                $departmentMap[] = [
+                    'id' => $value,
+                    'department' => $value 
+                ];
+            }
+
+            $data->customtext2 = json_encode( $departmentMap );            
+        }
+        
+        return parent::update_instance($instance, $data);
+        
+        
+    }
+    
     /**
      * We are a good plugin and don't invent our own UI/validation code path.
      *
@@ -484,9 +617,9 @@ class enrol_guest_plugin extends enrol_plugin {
 /**
  * Get icon mapping for font-awesome.
  */
-function enrol_guest_get_fontawesome_icon_map() {
+function enrol_warwickguest_get_fontawesome_icon_map() {
     return [
-        'enrol_guest:withpassword' => 'fa-key',
-        'enrol_guest:withoutpassword' => 'fa-unlock-alt',
+        'enrol_warwickguest:withpassword' => 'fa-key',
+        'enrol_warwickguest:withoutpassword' => 'fa-unlock-alt',
     ];
 }

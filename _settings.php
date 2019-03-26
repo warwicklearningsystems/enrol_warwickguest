@@ -28,17 +28,16 @@ defined('MOODLE_INTERNAL') || die();
 //$contextid = required_param('contextid', PARAM_INT);
 
 
-//require_once("$CFG->dirroot/enrol/classes/selector/designation.php");
+require_once("$CFG->dirroot/enrol/classes/selector/designation.php");
 //list($context, $course, $cm) = get_context_info_array($contextid);
 
 //exit(print_r($context));
 
 if ($ADMIN->fulltree) {
-    
-    $designationUrl = new moodle_url("/enrol/warwickguest/designation.php");
-    $departmentUrl = new moodle_url("/enrol/warwickguest/department.php");
-    
-    $settings->add(new admin_setting_heading('enrol_warwickguest_dep','',"<a href='$designationUrl'>Designation Settings</a> | <a href='$departmentUrl'>Department Settings</a>"));
+
+    //$ADMIN->add('manageenrols', new admin_category('enrolwarwickguestfolder', 'blar'));
+
+    //$settings = new admin_settingpage($section, 'blar', 'moodle/site:config');
     
     //--- general settings -----------------------------------------------------------------------------------
     $settings->add(new admin_setting_heading('enrol_warwickguest_settings', '', get_string('pluginname_desc', 'enrol_warwickguest')));
@@ -52,6 +51,9 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configcheckbox('enrol_warwickguest/showhint',
         get_string('showhint', 'enrol_warwickguest'), get_string('showhint_desc', 'enrol_warwickguest'), 0));
 
+    
+    
+    $settings->add(new enrol_selector_designation('enrol_warwickguest/designation', 'enrole_warwick_guest_designation', null, null, ['contextid'=>1]));
     
     
     //--- enrol instance defaults ----------------------------------------------------------------------------

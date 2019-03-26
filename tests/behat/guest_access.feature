@@ -1,4 +1,4 @@
-@enrol @enrol_guest
+@enrol @enrol_warwickguest
 Feature: Guest users can auto-enrol themself in courses where guest access is allowed
   In order to access courses contents
   As a guest

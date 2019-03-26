@@ -14,16 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Privacy Subsystem implementation for enrol_guest.
+ * Privacy Subsystem implementation for enrol_warwickguest.
  *
- * @package    enrol_guest
+ * @package    enrol_warwickguest
  * @copyright  2018 Carlos Escobedo <carlos@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace enrol_guest\privacy;
+namespace enrol_warwickguest\privacy;
 defined('MOODLE_INTERNAL') || die();
 /**
- * Privacy Subsystem for enrol_guest implementing null_provider.
+ * Privacy Subsystem for enrol_warwickguest implementing null_provider.
  *
  * @copyright  2018 Carlos Escobedo <carlos@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

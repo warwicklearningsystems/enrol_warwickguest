@@ -17,14 +17,14 @@
 /**
  * This file keeps track of upgrades to the guest enrolment plugin.
  *
- * @package    enrol_guest
+ * @package    enrol_warwickguest
  * @copyright  2011 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-function xmldb_enrol_guest_upgrade($oldversion) {
+function xmldb_enrol_warwickguest_upgrade($oldversion) {
     global $CFG;
 
     // Automatically generated Moodle v3.2.0 release upgrade line.
