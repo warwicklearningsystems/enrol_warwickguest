@@ -24,20 +24,15 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-
-//$contextid = required_param('contextid', PARAM_INT);
-
-
-//require_once("$CFG->dirroot/enrol/classes/selector/designation.php");
-//list($context, $course, $cm) = get_context_info_array($contextid);
-
-//exit(print_r($context));
+$designationUrl = new moodle_url("/enrol/warwickguest/designation.php");
+$departmentUrl = new moodle_url("/enrol/warwickguest/department.php");
+    
+$ADMIN->add('enrolments', new admin_category('enrol_warwickguest', 'Warwick Guest', true ));
+$ADMIN->add('enrol_warwickguest', new admin_externalpage('warwickguestdesignations', 'Designations', $designationUrl, 'moodle/site:config'));
+$ADMIN->add('enrol_warwickguest', new admin_externalpage('warwickguestdepartments', 'Departments', $departmentUrl, 'moodle/site:config'));
 
 if ($ADMIN->fulltree) {
-    
-    $designationUrl = new moodle_url("/enrol/warwickguest/designation.php");
-    $departmentUrl = new moodle_url("/enrol/warwickguest/department.php");
-    
+
     $settings->add(new admin_setting_heading('enrol_warwickguest_dep','',"<a href='$designationUrl'>Designation Settings</a> | <a href='$departmentUrl'>Department Settings</a>"));
     
     //--- general settings -----------------------------------------------------------------------------------
@@ -66,4 +61,5 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configselect_with_advanced('enrol_warwickguest/status',
         get_string('status', 'enrol_warwickguest'), get_string('status_desc', 'enrol_warwickguest'),
         array('value'=>ENROL_INSTANCE_DISABLED, 'adv'=>false), $options));
+
 }
