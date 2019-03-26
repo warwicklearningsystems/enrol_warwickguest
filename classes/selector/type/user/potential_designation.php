@@ -36,8 +36,10 @@ class potential_designation extends designation{
         global $DB;
         
         $searchObject = new search( $search, $this->propertyFromConfigToDisplay, $this->searchanywhere );
-        $results = $this->filterStoredValues( parent::find_users( $search ), $searchObject, 'customtext1');
+        $availableDesignations = parent::find_users( $search );
 
-        return $results;
+        $results = $this->filterStoredValues( $availableDesignations, $searchObject, 'customtext1');
+
+        return $results ? $results : $availableDesignations;
     }
 }

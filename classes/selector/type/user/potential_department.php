@@ -33,10 +33,12 @@ class potential_department extends department{
     public function find_users($search) {
         global $DB;
         
-        $searchObject = new search( $search, $this->propertyFromConfigToDisplay, $this->searchanywhere );
-        $results = $this->filterStoredValues( parent::find_users( $search ), $searchObject, 'customtext2' );
+        $searchObject = new search( $search, $this->propertyFromConfigToDisplay, $this->searchanywhere );        
+        $availableDepartments = parent::find_users( $search );
+        
+        $results = $this->filterStoredValues( $availableDepartments, $searchObject, 'customtext2' );
 
-        return $results;
+        return $results ? $results : $availableDepartments;
     }
 }
 

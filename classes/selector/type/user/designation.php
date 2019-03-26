@@ -74,9 +74,6 @@ class designation extends base{
      */
     public function find_users($search) {
         
-        $existingDesignations = $this->config->getFlatConfigByProperty( null, true );
-        var_dump($existingDesignations);
-        
         $searchObject = new search( $search , $this->propertyFromConfigToDisplay, $this->searchanywhere );
         $designations = self::extractFlatConfig( $this->enrolInstance, $search ? $searchObject : null);
         
