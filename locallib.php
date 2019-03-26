@@ -79,7 +79,7 @@ class enrol_warwickguest_enrol_form extends moodleform {
         }
         
         if( department::isValueSet( $instance, 'customtext2' ) ){
-            if( !designation::hasValue( $instance, $USER->phone2,'customtext2', 'department' ) ){
+            if( !department::hasValue( $instance, $USER->department,'customtext2', 'department' ) ){
                 $errors['guestpassword'] = 'invalid department';
             }
         }
