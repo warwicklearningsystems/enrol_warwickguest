@@ -48,8 +48,11 @@ $string['existingdesignations'] = 'Current Designations';
 $string['alloweddesignations'] = 'Allowed Designations';
 $string['availabledesignations'] = 'Available Designations';
 $string['disignations'] = 'Designations';
+$string['invaliddesignation'] = 'Invalid Designation';
 $string['existingdepartments'] = 'Current Departments';
 $string['departments'] = 'Departments';
 $string['alloweddepartments'] = 'Allowed Departments';
 $string['availabledepartments'] = 'Available Departments';
+$string['invaliddepartment'] = 'Invalid Department';
+
 

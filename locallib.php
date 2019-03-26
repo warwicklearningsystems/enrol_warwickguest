@@ -61,6 +61,18 @@ class enrol_warwickguest_enrol_form extends moodleform {
         $instance = $this->instance;
         
         if ($instance->password !== '') {
+            if( designation::isValueSet( $instance, 'customtext1' ) ){
+                if( !designation::hasValue( $instance, $USER->phone2,'customtext1', 'phone2' ) ){
+                    $errors['guestpassword'] = get_string('invaliddesignation', 'enrol_warwickguest');
+                }
+            }
+
+            if( department::isValueSet( $instance, 'customtext2' ) ){
+                if( !department::hasValue( $instance, $USER->department,'customtext2', 'department' ) ){
+                    $errors['guestpassword'] = get_string('invaliddepartment', 'enrol_warwickguest');
+                }
+            }
+
             if ($data['guestpassword'] !== $instance->password) {
                 $plugin = enrol_get_plugin('warwickguest');
                 if ($plugin->get_config('showhint')) {
@@ -69,18 +81,6 @@ class enrol_warwickguest_enrol_form extends moodleform {
                 } else {
                     $errors['guestpassword'] = get_string('passwordinvalid', 'enrol_warwickguest');
                 }
-            }
-        }
-        
-        if( designation::isValueSet( $instance, 'customtext1' ) ){
-            if( !designation::hasValue( $instance, $USER->phone2,'customtext1', 'phone2' ) ){
-                $errors['guestpassword'] = 'invalid designation';
-            }
-        }
-        
-        if( department::isValueSet( $instance, 'customtext2' ) ){
-            if( !department::hasValue( $instance, $USER->department,'customtext2', 'department' ) ){
-                $errors['guestpassword'] = 'invalid department';
             }
         }
 
