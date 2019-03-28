@@ -130,7 +130,7 @@ class enrol_warwickguest_plugin extends enrol_plugin {
             return false;
         }
 
-        if ($DB->record_exists('enrol', array('courseid'=>$courseid, 'enrol'=>'guest'))) {
+        if ($DB->record_exists('enrol', array('courseid'=>$courseid, 'enrol'=>'warwickguest'))) {
             return false;
         }
 
@@ -218,7 +218,7 @@ class enrol_warwickguest_plugin extends enrol_plugin {
             }
 
         } else {
-            $instances = $DB->get_records('enrol', array('courseid'=>$course->id, 'enrol'=>'guest'));
+            $instances = $DB->get_records('enrol', array('courseid'=>$course->id, 'enrol'=>'warwickguest'));
             foreach ($instances as $instance) {
                 $i = $instance->id;
 

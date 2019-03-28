@@ -66,7 +66,7 @@ class enrol_warwickguest_external extends external_api {
         $warnings = array();
 
         // Retrieve guest enrolment plugin.
-        $enrolplugin = enrol_get_plugin('guest');
+        $enrolplugin = enrol_get_plugin('warwickguest');
         if (empty($enrolplugin)) {
             throw new moodle_exception('invaliddata', 'error');
         }

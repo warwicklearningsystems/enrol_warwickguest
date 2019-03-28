@@ -49,7 +49,7 @@ class enrol_warwickguest_external_testcase extends externallib_advanced_testcase
         $this->resetAfterTest(true);
 
         // Check if guest enrolment plugin is enabled.
-        $guestplugin = enrol_get_plugin('guest');
+        $guestplugin = enrol_get_plugin('warwickguest');
         $this->assertNotEmpty($guestplugin);
 
         $studentrole = $DB->get_record('role', array('shortname' => 'student'));
@@ -73,7 +73,7 @@ class enrol_warwickguest_external_testcase extends externallib_advanced_testcase
 
         $this->assertEquals($instance, $result['instanceinfo']['id']);
         $this->assertEquals($course->id, $result['instanceinfo']['courseid']);
-        $this->assertEquals('guest', $result['instanceinfo']['type']);
+        $this->assertEquals('warwickguest', $result['instanceinfo']['type']);
         $this->assertEquals('Test instance', $result['instanceinfo']['name']);
         $this->assertTrue($result['instanceinfo']['status']);
         $this->assertFalse($result['instanceinfo']['passwordrequired']);
@@ -84,7 +84,7 @@ class enrol_warwickguest_external_testcase extends externallib_advanced_testcase
         $result = external_api::clean_returnvalue(enrol_warwickguest_external::get_instance_info_returns(), $result);
         $this->assertEquals($instance, $result['instanceinfo']['id']);
         $this->assertEquals($course->id, $result['instanceinfo']['courseid']);
-        $this->assertEquals('guest', $result['instanceinfo']['type']);
+        $this->assertEquals('warwickguest', $result['instanceinfo']['type']);
         $this->assertEquals('Test instance', $result['instanceinfo']['name']);
         $this->assertFalse($result['instanceinfo']['status']);
         $this->assertFalse($result['instanceinfo']['passwordrequired']);
@@ -108,7 +108,7 @@ class enrol_warwickguest_external_testcase extends externallib_advanced_testcase
 
         $this->assertEquals($instance, $result['instanceinfo']['id']);
         $this->assertEquals($course->id, $result['instanceinfo']['courseid']);
-        $this->assertEquals('guest', $result['instanceinfo']['type']);
+        $this->assertEquals('warwickguest', $result['instanceinfo']['type']);
         $this->assertEquals('Test instance', $result['instanceinfo']['name']);
         $this->assertTrue($result['instanceinfo']['status']);
         $this->assertFalse($result['instanceinfo']['passwordrequired']);
