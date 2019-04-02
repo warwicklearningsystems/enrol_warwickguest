@@ -15,6 +15,6 @@ To remove items, simply select and click 'Remove'. _Note: although this will rem
 
 #### Course
 
-To the final stage of the configuration go to _Dashboard > My courses > {course} > Users > Enrolment methods > Warwick Auto Enrolment._
+To the final stage of the configuration go to _Dashboard > My courses > {course} > Users > Enrolment methods > Warwick Guest Access._
 
 The Designation and Department elements are presented directly on this form and can be configured in exactly the same way as described above.
