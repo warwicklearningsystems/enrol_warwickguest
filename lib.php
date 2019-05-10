@@ -258,6 +258,27 @@ class enrol_warwickguest_plugin extends enrol_plugin {
             $fields['password'] = '';
         }
 
+        $instance = (object)$this->get_instance_defaults();
+
+        if( isset( $fields[ 'designations_add' ] ) ){
+            $designation = new \enrol_warwickguest\multiselect\designation('designations_add', [
+                'plugin' => 'enrol_warwickauto',
+                'enrol_instance' => $instance
+            ]);
+
+            $fields[ 'customtext1' ] = $designation->valuesToAdd( $fields[ 'designations_add' ] );
+        }
+
+        if( isset( $fields[ 'departments_add' ] ) ){
+
+            $department = new \enrol_warwickguest\multiselect\department('departments_add', [
+                'plugin' => 'enrol_warwickauto',
+                'enrol_instance' => $instance
+            ]);
+
+            $fields[ 'customtext2' ] = $department->valuesToAdd( $fields[ 'departments_add' ] );
+        }
+
         return parent::add_instance($course, $fields);
     }
 
@@ -397,7 +418,9 @@ class enrol_warwickguest_plugin extends enrol_plugin {
      * @return bool
      */
     public function edit_instance_form($instance, MoodleQuickForm $mform, $context) {
-        global $CFG, $GLOBALS;
+        global $CFG, $GLOBALS,$PAGE;
+
+        $PAGE->requires->jquery();
 
         $options = $this->get_status_options();
         
@@ -416,22 +439,49 @@ class enrol_warwickguest_plugin extends enrol_plugin {
         if (empty($instance->id) && $this->get_config('requirepassword')) {
             $mform->addRule('password', get_string('required'), 'required', null);
         }
-        
 
-        $designationAddElement = new enrol_warwickguest_formelementdesignationadd();
-        $designationAddElement->setInstance( $instance );
+        $designation = new \enrol_warwickguest\multiselect\designation(
+            'designations_add',
+            [
+                'plugin' => 'enrol_warwickguest',
+                'enrol_instance' => $instance
+            ]
+        );
+
+        $designationAddElement = new local_enrolmultiselect_formelementdesignationadd( null, null, null, null, $designation );
         $mform->addElement( $designationAddElement );
+
+        $designation = new \enrol_warwickguest\multiselect\potential_designation(
+            'designations_remove',
+            [
+                'plugin' => 'enrol_warwickguest',
+                'enrol_instance' => $instance
+            ]
+        );
         
-        $designationremoveElement = new enrol_warwickguest_formelementdesignationremove();
-        $designationremoveElement->setInstance( $instance );
-        $mform->addElement( $designationremoveElement );
+        $designationRemoveElement = new local_enrolmultiselect_formelementdesignationremove( null, null, null, null, $designation );
+        $mform->addElement( $designationRemoveElement );
+
+        $department = new \enrol_warwickguest\multiselect\department(
+            'departments_add',
+            [
+                'plugin' => 'enrol_warwickguest',
+                'enrol_instance' => $instance
+            ]
+        );
         
-        $departmentAddElement = new enrol_warwickguest_formelementdepartmentadd();
-        $departmentAddElement->setInstance( $instance );
+        $departmentAddElement = new local_enrolmultiselect_formelementdepartmentadd( null, null, null, null, $department );
         $mform->addElement( $departmentAddElement );
+
+        $department = new \enrol_warwickguest\multiselect\potential_department(
+            'departments_remove',
+            [
+                'plugin' => 'enrol_warwickguest',
+                'enrol_instance' => $instance
+            ]
+        );
         
-        $departmentremoveElement = new enrol_warwickguest_formelementdepartmentremove();
-        $departmentremoveElement->setInstance( $instance );
+        $departmentremoveElement = new local_enrolmultiselect_formelementdepartmentremove( null, null, null, null, $department );
         $mform->addElement( $departmentremoveElement );
     }
     
@@ -445,108 +495,30 @@ class enrol_warwickguest_plugin extends enrol_plugin {
      */
     public function update_instance($instance, $data) {
         global $DB;
+
+        $instance->customtext1    = null;
+        $instance->customtext2    = null;
         
-        if(optional_param('designations_add_button', false, PARAM_BOOL)){
+        if( !empty( $data->designations_add ) ){
+            $designation = new \enrol_warwickguest\multiselect\designation('designations_add', [
+                'plugin' => 'enrol_warwickauto',
+                'enrol_instance' => $instance
+            ]);
 
-            $existingDesignations = [];
-            
-            if( !is_null( $instance->customtext1 ) ){
-                $configMap = enrol_warwickguest\selector\type\user\designation::extractFlatConfig( $instance );
-                foreach( $configMap as $key => $config){
-                    $existingDesignations[] = $config->phone2;
-                }
-            }
-
-            $newValues = array_diff( $data->designations_remove, $existingDesignations );
-            $designationToAdd = array_merge( $existingDesignations, $newValues );
-            
-            $designationMap = [];
-            foreach( $designationToAdd as $value ){
-                $designationMap[] = [
-                    'id' => $value,
-                    'phone2' => $value 
-                ];
-            }
-
-            $data->customtext1 = json_encode( $designationMap );
+            $instance->customtext1 = $designation->valuesToAdd( $data->designations_add );
         }
         
-        if(optional_param('designations_remove_button', false, PARAM_BOOL)){
-            
-            $existingDesignations = [];
-            
-            if( !is_null( $instance->customtext1 ) ){
-                $configMap = enrol_warwickguest\selector\type\user\designation::extractFlatConfig( $instance );
-                foreach( $configMap as $key => $config){
-                    $existingDesignations[] = $config->phone2;
-                }
-            }
-            
-            $designationsToRemove = array_diff( $existingDesignations, $data->designations_add );
-        
-            $designationMap = [];
-            foreach( $designationsToRemove as $value ){
-                $designationMap[] = [
-                    'id' => $value,
-                    'phone2' => $value 
-                ];
-            }
+        if( !empty( $data->departments_add ) ){
 
-            $data->customtext1 = json_encode( $designationMap );            
+            $department = new \enrol_warwickguest\multiselect\department('departments_add', [
+                'plugin' => 'enrol_warwickauto',
+                'enrol_instance' => $instance
+            ]);
+
+            $instance->customtext2 = $department->valuesToAdd( $data->departments_add );
         }
-        
-        if(optional_param('departments_add_button', false, PARAM_BOOL)){
 
-            $existingDepartments = [];
-            
-            if( !is_null( $instance->customtext2 ) ){
-                $configMap = enrol_warwickguest\selector\type\user\department::extractFlatConfig( $instance, null, 'customtext2' );
-                foreach( $configMap as $key => $config){
-                    $existingDepartments[] = $config->department;
-                }
-            }
-
-            $newValues = array_diff( $data->departments_remove, $existingDepartments );
-            $departmentToAdd = array_merge( $existingDepartments, $newValues );
-            
-            $departmentMap = [];
-            foreach( $departmentToAdd as $value ){
-                $departmentMap[] = [
-                    'id' => $value,
-                    'department' => $value 
-                ];
-            }
-
-            $data->customtext2 = json_encode( $departmentMap );
-        }
-        
-        if(optional_param('departments_remove_button', false, PARAM_BOOL)){
-            
-            $existingDepartments = [];
-            
-            if( !is_null( $instance->customtext2 ) ){
-                $configMap = enrol_warwickguest\selector\type\user\department::extractFlatConfig( $instance, null, 'customtext2' );
-                foreach( $configMap as $key => $config){
-                    $existingDepartments[] = $config->department;
-                }
-            }
-            
-            $departmentsToRemove = array_diff( $existingDepartments, $data->departments_add );
-        
-            $departmentMap = [];
-            foreach( $departmentsToRemove as $value ){
-                $departmentMap[] = [
-                    'id' => $value,
-                    'department' => $value 
-                ];
-            }
-
-            $data->customtext2 = json_encode( $departmentMap );            
-        }
-        
         return parent::update_instance($instance, $data);
-        
-        
     }
     
     /**

@@ -24,16 +24,24 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$designationUrl = new moodle_url("/enrol/warwickguest/designation.php");
+/*$designationUrl = new moodle_url("/enrol/warwickguest/designation.php");
 $departmentUrl = new moodle_url("/enrol/warwickguest/department.php");
     
 $ADMIN->add('enrolments', new admin_category('enrol_warwickguest', 'Warwick Guest', true ));
 $ADMIN->add('enrol_warwickguest', new admin_externalpage('warwickguestdesignations', 'Designations', $designationUrl, 'moodle/site:config'));
 $ADMIN->add('enrol_warwickguest', new admin_externalpage('warwickguestdepartments', 'Departments', $departmentUrl, 'moodle/site:config'));
+*/
+$pluginName = 'enrol_warwickguest';
+$designationUrl = new moodle_url( "/local/enrolmultiselect/designation.php", [ 'plugin_name' => $pluginName ] );
+$departmentUrl = new moodle_url( "/local/enrolmultiselect/department.php", [ 'plugin_name' => $pluginName ] );
+
+$ADMIN->add('enrolments', new admin_category('enrol_warwickguest', 'Warwick Guest', true ));
+$ADMIN->add('enrol_warwickguest', new admin_externalpage("{$pluginName}_departments", 'Departments', $departmentUrl, 'moodle/site:config'));
+$ADMIN->add('enrol_warwickguest', new admin_externalpage("{$pluginName}_designations", 'Designations', $designationUrl, 'moodle/site:config'));
 
 if ($ADMIN->fulltree) {
 
-    $settings->add(new admin_setting_heading('enrol_warwickguest_dep','',"<a href='$designationUrl'>Designation Settings</a> | <a href='$departmentUrl'>Department Settings</a>"));
+    $settings->add(new admin_setting_heading('enrol_warwickguest_dep','',"<a href='$departmentUrl'>Department Settings</a> | <a href='$designationUrl'>Designation Settings</a>"));
     
     //--- general settings -----------------------------------------------------------------------------------
     $settings->add(new admin_setting_heading('enrol_warwickguest_settings', '', get_string('pluginname_desc', 'enrol_warwickguest')));
