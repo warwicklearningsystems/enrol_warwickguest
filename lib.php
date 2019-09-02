@@ -421,9 +421,9 @@ class enrol_warwickguest_plugin extends enrol_plugin {
         global $CFG, $GLOBALS,$PAGE;
 
         $PAGE->requires->jquery();
-
+        $selectionMoveInfoString = get_string('selectionmoveinfo', 'local_enrolmultiselect');
         $options = $this->get_status_options();
-        
+
         $mform->addElement('select', 'status', get_string('status', 'enrol_warwickguest'), $options);
         $mform->addHelpButton('status', 'status', 'enrol_warwickguest');
         $mform->setDefault('status', $this->get_config('status'));
@@ -448,6 +448,13 @@ class enrol_warwickguest_plugin extends enrol_plugin {
             ]
         );
 
+        $mform->addElement('html', <<<__HTML__
+<div class="alert alert-info">
+    $selectionMoveInfoString
+</div>
+__HTML__
+);
+
         $designationAddElement = new local_enrolmultiselect_formelementdesignationadd( null, null, null, null, $designation );
         $mform->addElement( $designationAddElement );
 
@@ -469,7 +476,14 @@ class enrol_warwickguest_plugin extends enrol_plugin {
                 'enrol_instance' => $instance
             ]
         );
-        
+
+        $mform->addElement('html', <<<__HTML__
+<div class="alert alert-info">
+    $selectionMoveInfoString
+</div>
+__HTML__
+);
+
         $departmentAddElement = new local_enrolmultiselect_formelementdepartmentadd( null, null, null, null, $department );
         $mform->addElement( $departmentAddElement );
 
