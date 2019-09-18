@@ -35,6 +35,13 @@ $capabilities = array(
         )
     ),
 
+    /* Non-site admin management of guest-access config. */
+    'enrol/warwickguest:nonsiteadminconfig' => array(
+        'riskbitmask' => RISK_CONFIG,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array()
+    )
 );
 
 

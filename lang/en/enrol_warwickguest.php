@@ -23,7 +23,8 @@
  */
 
 $string['allowguests'] = 'This course allows guest users to enter';
-$string['guest:config'] = 'Configure Warwick Guest access instances';
+$string['warwickguest:config'] = 'Configure Warwick Guest access instances';
+$string['warwickguest:nonsiteadminconfig'] = 'Non-site admin management of guest-access config';
 $string['guestaccess_withpassword'] = 'Warwick Guest access requires password';
 $string['guestaccess_withoutpassword'] = 'Warwick Guest access';
 $string['password'] = 'Password';
