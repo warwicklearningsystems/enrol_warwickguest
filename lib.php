@@ -130,9 +130,10 @@ class enrol_warwickguest_plugin extends enrol_plugin {
             return false;
         }
 
-        if ($DB->record_exists('enrol', array('courseid'=>$courseid, 'enrol'=>'warwickguest'))) {
-            return false;
-        }
+        // Include these lines if you only want one instance per course
+        //if ($DB->record_exists('enrol', array('courseid'=>$courseid, 'enrol'=>'warwickguest'))) {
+        //    return false;
+        //}
 
         return true;
     }
