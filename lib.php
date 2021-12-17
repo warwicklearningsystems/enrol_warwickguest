@@ -107,15 +107,15 @@ class enrol_warwickguest_plugin extends enrol_plugin {
         $array_department = array();
 
         foreach ($arr_departments as $key_departments) {
-            $array_department[] = $key_departments->department;
+            $array_department[] = strtoupper(trim($key_departments->department));
         }
 
         foreach ($arr_designations as $key_designations) {
-            $array_designation[] = $key_designations->phone2;
+            $array_designation[] = strtoupper(trim($key_designations->phone2));
         }
 
-        $department = trim($USER->department);
-        $designation = trim($USER->phone2);
+        $department = strtoupper(trim($USER->department));
+        $designation = strtoupper(trim($USER->phone2));
 
         $allow = false;
 
