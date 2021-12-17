@@ -36,6 +36,8 @@ defined('MOODLE_INTERNAL') || die();
  */
 class enrol_warwickguest_plugin extends enrol_plugin {
 
+
+
     /**
      * Returns optional enrolment information icons.
      *
@@ -95,16 +97,46 @@ class enrol_warwickguest_plugin extends enrol_plugin {
     public function try_guestaccess(stdClass $instance) {
         global $USER, $CFG;
 
+        $customtext1 = $instance->customtext1;
+        $customtext2 = $instance->customtext2;
+
+        $arr_departments = json_decode($customtext2);
+        $arr_designations = json_decode($customtext1);
+
+        $array_designation = array();
+        $array_department = array();
+
+        foreach ($arr_departments as $key_departments) {
+            $array_department[] = $key_departments->department;
+        }
+
+        foreach ($arr_designations as $key_designations) {
+            $array_designation[] = $key_designations->phone2;
+        }
+
+        $department = trim($USER->department);
+        $designation = trim($USER->phone2);
+
         $allow = false;
 
-        if ($instance->password === '') {
-            $allow = true;
-
-        } else if (isset($USER->enrol_warwickguest_passwords[$instance->id])) { // this is a hack, ideally we should not add stuff to $USER...
-            if ($USER->enrol_warwickguest_passwords[$instance->id] === $instance->password) {
+        if (in_array($department, $array_department)) {
+            if (in_array($designation, $array_designation)) {
                 $allow = true;
             }
         }
+
+        if ($customtext1=="") {
+            $allow = false;
+        }
+
+//        if ($instance->password === '') {
+//            $allow = true;
+//
+//        } else if (isset($USER->enrol_warwickguest_passwords[$instance->id])) { // this is a hack, ideally we should not add stuff to $USER...
+//            if ($USER->enrol_warwickguest_passwords[$instance->id] === $instance->password) {
+//                $allow = true;
+//            }
+//        }
 
         if ($allow) {
             // Temporarily assign them some guest role for this context
