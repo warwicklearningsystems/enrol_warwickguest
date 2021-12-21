@@ -120,10 +120,10 @@ class enrol_warwickguest_plugin extends enrol_plugin {
         $allow = false;
 
         if (in_array($designation, $array_designation)) {
-            if (trim($department)=="") {
+            if (in_array($department, $array_department)) {
                 $allow = true;
             }
-            if (in_array($department, $array_department)) {
+            if (empty($array_department)) {
                 $allow = true;
             }
         }
