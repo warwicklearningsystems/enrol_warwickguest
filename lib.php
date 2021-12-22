@@ -119,6 +119,15 @@ class enrol_warwickguest_plugin extends enrol_plugin {
 
         $allow = false;
 
+        if (in_array($department, $array_department)) {
+            if (in_array($designation, $array_designation)) {
+                $allow = true;
+            }
+            if (empty($array_designation)) {
+                $allow = true;
+            }
+        }
+
         if (in_array($designation, $array_designation)) {
             if (in_array($department, $array_department)) {
                 $allow = true;
@@ -127,11 +136,7 @@ class enrol_warwickguest_plugin extends enrol_plugin {
                 $allow = true;
             }
         }
-
-        if ($customtext1=="") {
-            $allow = false;
-        }
-
+        
 //        if ($instance->password === '') {
 //            $allow = true;
 //
