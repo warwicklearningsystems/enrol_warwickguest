@@ -136,7 +136,13 @@ class enrol_warwickguest_plugin extends enrol_plugin {
                 $allow = true;
             }
         }
-        
+
+        // MOO-2412
+        if (empty($array_department) && empty($array_designation)) {
+            $allow = true;
+        }
+
+
 //        if ($instance->password === '') {
 //            $allow = true;
 //

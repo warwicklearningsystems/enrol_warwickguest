@@ -57,9 +57,10 @@ class enrol_warwickguest_enrol_form extends moodleform {
     public function validation($data, $files) {
         global $DB, $CFG, $USER;
 
-        $errors = parent::validation($data, $files);
+
         $instance = $this->instance;
-        
+        $errors = parent::validation($data, $files);
+
         if ($instance->password !== '') {
             if( designation::isValueSet( $instance, 'customtext1' ) ){
                 if( !designation::hasValue( $instance, $USER->phone2,'customtext1', 'phone2' ) ){
@@ -86,4 +87,5 @@ class enrol_warwickguest_enrol_form extends moodleform {
 
         return $errors;
     }
+
 }
