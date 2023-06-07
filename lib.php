@@ -120,7 +120,8 @@ class enrol_warwickguest_plugin extends enrol_plugin {
         $allow = false;
 
         if (in_array($department, $array_department)) {
-            if (in_array($designation, $array_designation)) {
+
+            if (in_array($designation, $array_designation) || $designation=="") {
                 $allow = true;
             }
             if (empty($array_designation)) {
@@ -129,7 +130,7 @@ class enrol_warwickguest_plugin extends enrol_plugin {
         }
 
         if (in_array($designation, $array_designation)) {
-            if (in_array($department, $array_department)) {
+            if (in_array($department, $array_department) || $department=="") {
                 $allow = true;
             }
             if (empty($array_department)) {
@@ -512,7 +513,7 @@ __HTML__
                 'enrol_instance' => $instance
             ]
         );
-        
+
         $designationRemoveElement = new local_enrolmultiselect_formelementdesignationremove( null, null, null, null, $designation );
         $mform->addElement( $designationRemoveElement );
 
@@ -541,11 +542,11 @@ __HTML__
                 'enrol_instance' => $instance
             ]
         );
-        
+
         $departmentremoveElement = new local_enrolmultiselect_formelementdepartmentremove( null, null, null, null, $department );
         $mform->addElement( $departmentremoveElement );
     }
-    
+
     /**
      * Update instance of enrol plugin.
      *
@@ -559,7 +560,7 @@ __HTML__
 
         $instance->customtext1    = null;
         $instance->customtext2    = null;
-        
+
         if( !empty( $data->designations_add ) ){
             $designation = new \enrol_warwickguest\multiselect\designation('designations_add', [
                 'plugin' => 'enrol_warwickauto',
@@ -568,7 +569,7 @@ __HTML__
 
             $instance->customtext1 = $designation->valuesToAdd( $data->designations_add );
         }
-        
+
         if( !empty( $data->departments_add ) ){
 
             $department = new \enrol_warwickguest\multiselect\department('departments_add', [
@@ -581,7 +582,7 @@ __HTML__
 
         return parent::update_instance($instance, $data);
     }
-    
+
     /**
      * We are a good plugin and don't invent our own UI/validation code path.
      *

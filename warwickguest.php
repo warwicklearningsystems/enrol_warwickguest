@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 //exit(var_dump(realpath(__DIR__ )));
 
