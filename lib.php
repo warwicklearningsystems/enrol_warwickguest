@@ -503,7 +503,7 @@ class enrol_warwickguest_plugin extends enrol_plugin {
 __HTML__
 );
 
-        $designationAddElement = new local_enrolmultiselect_formelementdesignationadd( null, null, null, null, $designation );
+        $designationAddElement = new local_enrolmultiselect_formelementdesignationadd($designation );
         $mform->addElement( $designationAddElement );
 
         $designation = new \enrol_warwickguest\multiselect\potential_designation(
@@ -514,7 +514,7 @@ __HTML__
             ]
         );
 
-        $designationRemoveElement = new local_enrolmultiselect_formelementdesignationremove( null, null, null, null, $designation );
+        $designationRemoveElement = new local_enrolmultiselect_formelementdesignationremove($designation, null, null, null, null );
         $mform->addElement( $designationRemoveElement );
 
         $department = new \enrol_warwickguest\multiselect\department(
@@ -532,7 +532,7 @@ __HTML__
 __HTML__
 );
 
-        $departmentAddElement = new local_enrolmultiselect_formelementdepartmentadd( null, null, null, null, $department );
+        $departmentAddElement = new local_enrolmultiselect_formelementdepartmentadd($department );
         $mform->addElement( $departmentAddElement );
 
         $department = new \enrol_warwickguest\multiselect\potential_department(
@@ -543,7 +543,7 @@ __HTML__
             ]
         );
 
-        $departmentremoveElement = new local_enrolmultiselect_formelementdepartmentremove( null, null, null, null, $department );
+        $departmentremoveElement = new local_enrolmultiselect_formelementdepartmentremove($department);
         $mform->addElement( $departmentremoveElement );
     }
 
